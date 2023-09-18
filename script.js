@@ -1,8 +1,10 @@
-const title = ['test'];
-const note = ['note'];
-
+let title = ['test'];
+let note = ['note'];
 let trashTitle = ['trash'];
 let trashNote = ['trash'];
+load();
+loadTrash();
+
 
 function render() {
     let content = document.getElementById('content');
@@ -97,5 +99,28 @@ function deleteNote(i) {
 
     trashTitle.splice(i, 1);
     trashNote.splice(i, 1);
+    renderTrash();
+}
+
+function saveTrash() {
+
+    let trashAsText = JSON.stringify(trashTitle);
+    localStorage.setItem('trashTitle', trashAsText);
+    let trashNoteAsText = JSON.stringify(trashNote);
+    localStorage.setItem('trashNote', trashNoteAsText);
+    renderTrash();
+}
+
+function shiftNote(i) {
+    const titleToDelete = title[i];
+    const noteToDelete = note[i];
+    title.splice(i, 1);
+    note.splice(i, 1);
+    loadTrash();
+    trashTitle.push(titleToDelete);
+    trashNote.push(noteToDelete);
+    save();
+    saveTrash();
+    render();
     renderTrash();
 }
